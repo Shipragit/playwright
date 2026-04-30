@@ -20,8 +20,25 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
+      if: always()
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+    - name: Send email with report
+      if: always()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        secure: true
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "Playwright Test Report"
+        to: shiva291291@gmail.com
+        from: shiva291291@gmail.com
+        body: |
+          Playwright test execution completed.
+          Status: ${{ job.status }}
+        attachments: playwright-report/index.html
