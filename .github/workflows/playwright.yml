@@ -43,7 +43,7 @@ jobs:
         retention-days: 30
 
     - name: AI Failure Analysis
-      if: failure()
+      if: always()
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
