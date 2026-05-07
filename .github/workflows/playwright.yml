@@ -47,7 +47,7 @@ jobs:
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        python ai_analyzer.py playwright-report.json
+        python ai_analyzer.py wright-report.json
 
     - name: Send email with report
       if: always()
