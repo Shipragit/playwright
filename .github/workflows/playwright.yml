@@ -33,7 +33,7 @@ jobs:
     - name: Run Playwright tests
       continue-on-error: true
       run: |
-        npx playwright test --reporter=json > playwright-report.json
+        npx playwright test 
 
     - uses: actions/upload-artifact@v4
       if: always()
