@@ -12,42 +12,58 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-east-1
+
     steps:
 
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
         node-version: lts/*
 
-    - name: Install dependencies
+    - name: Install Node dependencies
       run: npm ci
 
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
 
     - name: Install Python dependencies
-      run: pip install openai
+      run: pip install boto3
 
     - name: Run Playwright tests
       continue-on-error: true
-      run: |
-        npx playwright test 
+      run: npx playwright test
 
-    - uses: actions/upload-artifact@v4
+    - name: Upload Playwright Report
       if: always()
+      uses: actions/upload-artifact@v4
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
 
-    - name: AI Failure Analysis
+    - name: Upload JSON Report
       if: always()
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      run: |
-        python ai_analyzer2.py 
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-json-report
+        path: playwright-report.json
+
+    - name: Run AI Analyzer
+      if: always()
+      continue-on-error: true
+      run: python bedrock.py playwright-report.json
 
     - name: Send email with report
       if: always()
@@ -58,7 +74,7 @@ jobs:
         secure: true
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "Playwright Test Report"
+        subject: "Playwright Test Report - ${{ job.status }}"
         to: shiva291291@gmail.com
         from: shiva291291@gmail.com
         body: |
@@ -66,4 +82,3 @@ jobs:
           Status: ${{ job.status }}
 
         attachments: playwright-report/index.html
-        #adding comment
