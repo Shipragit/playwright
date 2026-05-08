@@ -8,7 +8,8 @@ client = boto3.client(
 )
 
 print("analyzing the report")
-model_id = "anthropic.claude-3-haiku-20240307-v1:0"
+
+model_id = "us.anthropic.claude-sonnet-4-6"
 
 file_path = sys.argv[1]
 
