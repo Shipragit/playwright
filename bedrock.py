@@ -7,7 +7,7 @@ client = boto3.client(
     region_name="us-east-1"
 )
 
-print("analyzing the report")
+print("Analyzing the Test report by aws bedrock (claude-sonnet-4-6")
 
 model_id = "us.anthropic.claude-sonnet-4-6"
 
@@ -19,6 +19,7 @@ with open(file_path, "r") as f:
 report_data = json.dumps(report_json)
 
 prompt = f"""
+Think like you are QA expert,
 Analyze this Playwright test report.
 
 Provide:
@@ -54,4 +55,11 @@ response = client.invoke_model(
 
 model_response = json.loads(response["body"].read())
 
-print(model_response["content"][0]["text"])
+ai_result = model_response["content"][0]["text"]
+
+print(ai_result)
+
+with open("ai-analysis.txt", "w") as f:
+    f.write(ai_result)
+
+print("\nAI analysis saved into ai-analysis.txt")

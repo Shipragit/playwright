@@ -81,5 +81,7 @@ jobs:
           Playwright test execution completed.
           Status: ${{ job.status }}
 
-        attachments: playwright-report/index.html
-        #adding for comment
+        attachments: |
+            playwright-report/index.html
+            ai-analysis.txt
+        
