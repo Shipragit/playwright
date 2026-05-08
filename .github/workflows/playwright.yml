@@ -66,3 +66,4 @@ jobs:
           Status: ${{ job.status }}
 
         attachments: playwright-report/index.html
+        #adding comment
