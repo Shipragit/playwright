@@ -77,7 +77,7 @@ td {{
 </tr>
 
 <tr>
-<td>UAT</td>
+<td>Brightspeed UAT</td>
 <td class="pass">Healthy</td>
 </tr>
 
