@@ -61,6 +61,9 @@ jobs:
       with:
         name: playwright-json-report
         path: playwright-report.json
+        
+    - name: Generate HTML report
+      run: python generate_report.py
 
     - name: Run AI Analyzer
       if: always()
@@ -79,9 +82,10 @@ jobs:
         subject: "Playwright Test Report - ${{ job.status }}"
         to: shiva291291@gmail.com
         from: shiva291291@gmail.com
-        body: |
-          Playwright test execution completed.
-          Status: ${{ job.status }}
+        #body: |
+          #Playwright test execution completed.
+          #Status: ${{ job.status }}
+        html_body: file://email-report.html
 
         attachments: |
             playwright-report/index.html
