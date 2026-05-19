@@ -81,7 +81,7 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Playwright Test Report - ${{ job.status }}"
         to: Shivakumara.Appaji@infinite.com
-        from: sudhir.bagi@infinite.com
+        from: sudhirb@infinite.com
         #body: |
           #Playwright test execution completed.
           #Status: ${{ job.status }}
